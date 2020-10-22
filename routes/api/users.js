@@ -2,14 +2,16 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const router = express.Router();
 
 const User = require('../../models/User');
-// @GET api/users
-// @desc TestRoute
+// @route POST api/users
+// @desc Register Route
 // @access Public
-router.get('/',[
+router.post('/',[
     check('name','Name is Required').not().isEmpty(),
     check('email','Please enter a valid email').isEmail(),
     check('password','Password must be minimum of 6 characters').isLength({ min : 6})
@@ -37,10 +39,21 @@ router.get('/',[
                     name,
                     email,
                     password:hash,
-                    avatar})
-                    .save()
+                    avatar}).save()
                 .then(user => {
-                    return res.status(200).send('User Created')
+                    const payload = {
+                        user:{
+                            id:user.id
+                        }
+                    };
+                    jwt.sign(payload,config.get('jwtSecret'),{
+                        expiresIn:360000
+                        },(err,token)=>{
+                            if(err)
+                            throw err;
+                            return res.json({token})
+                        })
+                    //return res.status(200).send('User Created')
                 })
                 .catch(err => {
                     return res.status(500).send('User not Created')
