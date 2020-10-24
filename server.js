@@ -8,7 +8,8 @@ const app = express();
 mongoose.connect(config.get('mongoURI'),{
     useNewUrlParser:true,
     useUnifiedTopology: true,
-    useCreateIndex:true
+    useCreateIndex:true,
+    useFindAndModify:false
 })
 .then(res => console.log('MongoDb Connected...'))
 .catch(err => console.log(err));
