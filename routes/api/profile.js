@@ -8,6 +8,7 @@ const config = require('config');
 //Loading Models
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Post = require("../../models/Post");
 
 // @route GET api/profile/me
 // @desc Get Current User Profile
@@ -17,7 +18,7 @@ router.get("/me", auth, (req, res) => {
     .populate("user", ["name", "avatar"])
     .then((profile) => {
       if (!profile) return res.status(400).json({ msg: "There is No Profile" });
-      return res.status(200).json(res);
+      return res.status(200).json(profile);
     })
     .catch((err) => {
       console.log(err);
@@ -142,8 +143,8 @@ router.get("/user/:userid", (req, res) => {
 
 router.delete("/", auth, async (req, res) => {
   try {
-    //@todo remove user posts
-
+    //Remove User Posts
+    await Post.deleteMany({ user : req.user.id});
     //Remove Profile
     await Profile.findOneAndRemove({ user: req.user.id });
     //Remove user
