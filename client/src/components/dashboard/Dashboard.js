@@ -16,7 +16,7 @@ const Dashboard = ({
 }) => {
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
   return loading && profile === null ? (
     <Spinner />
   ) : (
@@ -31,7 +31,9 @@ const Dashboard = ({
           <Experience experience={profile.experience} />
           <Education education={profile.education} />
           <div className="my-2">
-            <button onClick={() => deleteAccount()} className="btn btn-danger"><i className="fas fa-user-minus"></i> Delete My Account</button>
+            <button onClick={() => deleteAccount()} className="btn btn-danger">
+              <i className="fas fa-user-minus"></i> Delete My Account
+            </button>
           </div>
         </Fragment>
       ) : (
@@ -47,15 +49,17 @@ const Dashboard = ({
 };
 
 Dashboard.propTypes = {
-  getCurrentProfile:PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  deleteAccount:PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  profile: state.profile
+  profile: state.profile,
 });
 
-export default connect(mapStateToProps, { deleteAccount,getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { deleteAccount, getCurrentProfile })(
+  Dashboard
+);
