@@ -34,7 +34,7 @@ router.post('/',[
             });
             //Encrypting Password
             bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(password, salt, (err, hash) => {  
+                bcrypt.hash(password, salt, (err, hash) => {
                 new User({
                     name,
                     email,
@@ -65,7 +65,7 @@ router.post('/',[
             return res.status(400).json({ errors : [{ msg : 'User Already Exists'}]})
         }
     })
-    .catch(err => res.send(500).send('Server Error'))
+    .catch(err => res.status(500).send('Server Error'))
 })
 
 module.exports = router;
