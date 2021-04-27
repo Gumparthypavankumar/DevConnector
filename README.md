@@ -1,4 +1,4 @@
-# DevConnector
+# DevBuddy
 
   This applications helps the developers to connect to one another and post or comment to a post and many more and this is a full stack application
 
